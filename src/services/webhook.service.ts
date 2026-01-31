@@ -1,29 +1,33 @@
 import { Injectable } from '@nestjs/common';
-import { Webhook, WebhookInput } from '../models/types';
-import { StorageRepository } from '../repositories/storage';
+import { CreateWebhookDto } from '../dto/webhook.dto';
+import { WebhookRepository } from '../repositories/webhook.repository';
+import { LogMethod } from '../decorators/log.decorator';
 
 @Injectable()
 export class WebhookService {
-  constructor(private readonly storageRepository: StorageRepository) {}
+  constructor(private readonly webhookRepository: WebhookRepository) {}
 
-  createWebhook(input: WebhookInput): Webhook {
-    const id = Math.random().toString(36).substring(7);
-    const webhook: Webhook = {
-      id,
+  @LogMethod()
+  async createWebhook(input: CreateWebhookDto) {
+    return await this.webhookRepository.create({
       source: input.source,
       event: input.event,
       payload: input.payload,
-      receivedAt: new Date()
-    };
-    this.storageRepository.save(webhook);
-    return webhook;
+    });
   }
 
-  getAllWebhooks(): Webhook[] {
-    return this.storageRepository.getAll();
+  @LogMethod()
+  async getAllWebhooks() {
+    return this.webhookRepository.findAll();
   }
 
-  getWebhookById(id: string): Webhook | undefined {
-    return this.storageRepository.getById(id);
+  @LogMethod()
+  async getWebhookById(id: string) {
+    return this.webhookRepository.findById(id);
+  }
+
+  @LogMethod()
+  async getWebhookCount(): Promise<number> {
+    return this.webhookRepository.count();
   }
 }
