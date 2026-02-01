@@ -80,26 +80,6 @@ Create a `.env` file in the root directory with the `.env` file I attached in ma
 - **THROTTLE_LIMIT**: Maximum requests per window
 - **REQUEST_TIMEOUT**: Global request timeout in milliseconds
 
-## Database Setup
-
-1. Generate Prisma client:
-```bash
-npx prisma generate
-```
-
-2. Run database migrations:
-```bash
-npx prisma migrate dev
-```
-
-### Database Schema
-
-The application uses three main models:
-
-- **User**: Stores user credentials and authentication data
-- **Webhook**: Stores webhook events with source, event type, and payload
-- **RefreshToken**: Manages refresh tokens for authentication
-
 ## Running the Application
 
 ### Development Mode
@@ -176,23 +156,44 @@ Import these into Postman to test the API endpoints.
 OVEN-Backend-Test-Task/
 ├── src/
 │   ├── common/
-│   │   ├── decorators/      # Custom decorators
-│   │   ├── filters/         # Exception filters
-│   │   ├── guards/          # Authentication guards
-│   │   ├── interceptors/    # Timeout interceptor
-│   │   └── utils/           # Utility functions (token, etc.)
+│   │   └── interceptors/    # Timeout interceptor
 │   ├── config/              # Application configuration
-│   ├── dtos/                # Data Transfer Objects
+│   ├── controllers/         # HTTP request handlers
+│   │   ├── auth.controller.ts
+│   │   └── webhook.controller.ts
+│   ├── decorators/          # Custom decorators
+│   ├── dto/                 # Data Transfer Objects
+│   │   ├── auth.dto.ts
+│   │   ├── common.dto.ts
+│   │   └── webhook.dto.ts
+│   ├── guards/              # Authentication guards
+│   │   ├── auth.guard.ts
+│   │   └── jwt-auth.guard.ts
+│   ├── helper/              # Utility functions
+│   │   └── token.ts
+│   ├── models/              # Type definitions
+│   │   ├── auth.type.ts
+│   │   ├── common.type.ts
+│   │   ├── types.ts
+│   │   └── webhook.type.ts
 │   ├── modules/             # Feature modules
 │   │   ├── auth.module.ts
 │   │   ├── storage.module.ts
 │   │   ├── throttler.module.ts
 │   │   └── webhook.module.ts
+│   ├── repositories/        # Data access layer
+│   │   ├── refreshToken.repository.ts
+│   │   ├── user.repository.ts
+│   │   └── webhook.repository.ts
 │   ├── services/            # Business logic services
+│   │   ├── auth.service.ts
+│   │   ├── prisma.service.ts
+│   │   └── webhook.service.ts
 │   ├── app.module.ts        # Root module
 │   └── main.ts              # Application entry point
 ├── prisma/
-│   └── schema.prisma        # Database schema
+│   ├── schema.prisma        # Database schema
+│   └── migrations/          # Database migrations
 ├── test/                    # Test files
 ├── postman/                 # Postman collections
 ├── .env                     # Environment variables
