@@ -1,3 +1,5 @@
+import { DocumentBuilder } from "@nestjs/swagger";
+
 export const throttlerConfig = {
   global: {
     ttl: parseInt(process.env.THROTTLE_TTL || '60000', 10),
@@ -29,3 +31,20 @@ export const corsConfig = {
   exposedHeaders: process.env.CORS_EXPOSED_HEADERS || '',
   maxAge: parseInt(process.env.CORS_MAX_AGE || '3600', 10),
 };
+
+export const swaggerConfig = new DocumentBuilder()
+    .setTitle('OVEN Backend API')
+    .setDescription('API Documentation for OVEN Backend Test Task')
+    .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'JWT-auth',
+    )
+    .build();

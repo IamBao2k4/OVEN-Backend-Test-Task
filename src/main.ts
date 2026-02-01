@@ -3,8 +3,9 @@ dotenv.config();
 
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
+import { SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { appConfig, corsConfig } from './config/config';
+import { appConfig, corsConfig, swaggerConfig } from './config/config';
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
 async function bootstrap() {
@@ -28,8 +29,12 @@ async function bootstrap() {
   const prefix = appConfig.prefixApi;
   app.setGlobalPrefix(prefix);
 
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api-docs', app, document);
+
   const port = appConfig.port;
   await app.listen(port);
   console.log(`Server is running on ${port}`);
+  console.log(`Swagger documentation available at http://localhost:${port}/api-docs`);
 }
 bootstrap(); 
