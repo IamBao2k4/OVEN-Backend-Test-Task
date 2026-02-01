@@ -5,6 +5,7 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import { appConfig } from './config/config';
+import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -14,6 +15,8 @@ async function bootstrap() {
     whitelist: true,
     forbidNonWhitelisted: true,
   }));
+
+  app.useGlobalInterceptors(new TimeoutInterceptor());
 
   const prefix = appConfig.prefixApi;
   app.setGlobalPrefix(prefix);

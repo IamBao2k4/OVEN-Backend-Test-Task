@@ -18,4 +18,5 @@ export const databaseConfig = {
 export const appConfig = {
   port: parseInt(process.env.PORT || '3000', 10),
   prefixApi: process.env.PREFIX_API || '/api/v1',
+  requestTimeout: parseInt(process.env.REQUEST_TIMEOUT || '10000', 10),
 };
