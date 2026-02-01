@@ -1,22 +1,26 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNotEmpty, Max, MaxLength } from 'class-validator';
 
 export class LoginDto {
   @IsString()
   @IsNotEmpty()
+  @MaxLength(30)
   username: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   password: string;
 }
 
 export class RegisterDto {
   @IsString()
   @IsNotEmpty()
+  @MaxLength(30)
   username: string;
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
   password: string;
 }
 
@@ -32,12 +36,12 @@ class UserResponseDto {
 }
 
 export class LoginResponseDto {
-  user: UserResponseDto;
+  data: UserResponseDto;
   accessToken: string;
   refreshToken: string;
 
   constructor(user: UserResponseDto, accessToken: string, refreshToken: string) {
-    this.user = user;
+    this.data = user;
     this.accessToken = accessToken;
     this.refreshToken = refreshToken;
   }

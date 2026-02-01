@@ -11,6 +11,7 @@ export class CreateWebhookDto {
   @IsNotEmpty()
   event: string;
 
+  @IsNotEmpty()
   payload: any;
 }
 
