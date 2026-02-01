@@ -81,23 +81,17 @@ This document provides a comprehensive analysis of the webhook service implement
 
 ### Code Quality Issues
 
-#### 10. Wrong argument in getById method
+#### 11. Wrong argument in getById method
 - **Severity**: Critical
 - **Category**: Code Quality
 - **Description**: getById function only allow string variable but it receives string|string[] variable.
 - **Impact**: This will cause runtime errors when trying to retrieve webhooks by ID, server can't start.
 
-#### 11. No Input Schema Validation
+#### 12. No Input Schema Validation
 - **Severity**: High
 - **Category**: Code Quality, Security
 - **Description**: No validation that required fields (source, event, payload) exist or are correct types.
 - **Impact**: Invalid data can be stored, runtime errors.
-
-#### 12. No Environment Variable Validation
-- **Severity**: Low
-- **Category**: Code Quality
-- **Description**: PORT is used without validating it exists or is a valid number.
-- **Impact**: Service may start on unexpected port.
 
 #### 13. Missing CORS Configuration
 - **Severity**: Medium

@@ -17,8 +17,8 @@ export class WebhookService {
   }
 
   @LogMethod()
-  async getAllWebhooks() {
-    return this.webhookRepository.findAll();
+  async getAllWebhooks(page?: number, limit?: number) {
+    return this.webhookRepository.findAll(page, limit);
   }
 
   @LogMethod()

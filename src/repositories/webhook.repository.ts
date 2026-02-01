@@ -12,9 +12,14 @@ export class WebhookRepository {
     });
   }
 
-  async findAll(): Promise<Webhook[]> {
+  async findAll(page?: number, limit?: number): Promise<Webhook[]> {
+    const skip = page && limit ? (page - 1) * limit : 0;
+    const take = limit;
+
     return await this.prisma.webhook.findMany({
       orderBy: { receivedAt: 'desc' },
+      skip,
+      take,
     });
   }
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, NotFoundException, UseGuards, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, NotFoundException, UseGuards, HttpStatus, HttpCode } from '@nestjs/common';
 import { WebhookService } from '../services/webhook.service';
 import { AuthGuard } from '../guards/auth.guard';
 import {
@@ -7,7 +7,7 @@ import {
   GetAllWebhooksResponseDto,
   WebhookResponseDto
 } from '../dto/webhook.dto';
-import { BaseResponse } from 'src/dto/common.dto';
+import { BaseResponse, PaginationQueryDto } from 'src/dto/common.dto';
 
 @Controller('webhooks')
 @UseGuards(AuthGuard)
@@ -29,11 +29,13 @@ export class WebhookController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllWebhooks(): Promise<BaseResponse<GetAllWebhooksResponseDto>> {
-    const allWebhooks = await this.webhookService.getAllWebhooks();
+  async getAllWebhooks(@Query() query: PaginationQueryDto): Promise<BaseResponse<GetAllWebhooksResponseDto>> {
+    const { page = 1, limit = 10 } = query;
+    const allWebhooks = await this.webhookService.getAllWebhooks(page, limit);
     const count = await this.webhookService.getWebhookCount();
+    
     return {
-      data: new GetAllWebhooksResponseDto(allWebhooks, count),
+      data: new GetAllWebhooksResponseDto(allWebhooks, count, page, limit),
       message: 'All webhooks retrieved',
       statusCode: HttpStatus.OK,
       timestamp: new Date().toISOString()

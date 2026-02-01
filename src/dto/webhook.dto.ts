@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 import { Webhook } from 'src/models/webhook.type';
+import { PaginationMetadata } from './common.dto';
 
 export class CreateWebhookDto {
   @IsString()
@@ -48,10 +49,10 @@ export class CreateWebhookResponseDto {
 
 export class GetAllWebhooksResponseDto {
   data: WebhookResponseDto[];
-  count: number;
+  pagination: PaginationMetadata;
 
-  constructor(webhooks: Webhook[], count: number) {
+  constructor(webhooks: Webhook[], totalItems: number, page: number, limit: number) {
     this.data = webhooks.map(webhook => WebhookResponseDto.fromModel(webhook));
-    this.count = count;
+    this.pagination = new PaginationMetadata(page, limit, totalItems);
   }
 }

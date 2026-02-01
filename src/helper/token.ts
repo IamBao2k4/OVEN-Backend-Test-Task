@@ -17,8 +17,6 @@ export class TokenHandler {
   }
 
   static async generateRefreshToken(user: { id: string }, refreshTokenRepository: RefreshTokenRepository): Promise<string> {
-    console.log('Generating refresh token for user:', this.REFRESH_TOKEN_EXPIRES_IN, "/n", this.JWT_SECRET);
-    
     const token = jwt.sign(
       { userId: user.id, type: 'refresh' },
       this.JWT_SECRET,
@@ -33,15 +31,15 @@ export class TokenHandler {
     return token;
   }
 
-  static validateToken(token: string): { userId: string; username: string } {
+  static validateToken(token: string): { userId: string; username: string; type: string } {
     try {
       const payload = jwt.verify(token, this.JWT_SECRET) as { userId: string; username: string; type: string };
 
-      if (payload.type !== 'access') {
+      if (payload.type !== 'access' && payload.type !== 'refresh') {
         throw new UnauthorizedException('Invalid token type');
       }
 
-      return { userId: payload.userId, username: payload.username };
+      return { userId: payload.userId, username: payload.username , type: payload.type };
     } catch (error) {
       throw new UnauthorizedException('Invalid token');
     }
