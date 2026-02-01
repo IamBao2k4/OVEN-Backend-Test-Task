@@ -20,3 +20,12 @@ export const appConfig = {
   prefixApi: process.env.PREFIX_API || '/api/v1',
   requestTimeout: parseInt(process.env.REQUEST_TIMEOUT || '10000', 10),
 };
+
+export const corsConfig = {
+  origin: process.env.CORS_ORIGIN || '*',
+  methods: process.env.CORS_METHODS || 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: process.env.CORS_CREDENTIALS === 'true',
+  allowedHeaders: process.env.CORS_ALLOWED_HEADERS || 'Content-Type,Authorization',
+  exposedHeaders: process.env.CORS_EXPOSED_HEADERS || '',
+  maxAge: parseInt(process.env.CORS_MAX_AGE || '3600', 10),
+};

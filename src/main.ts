@@ -4,11 +4,20 @@ dotenv.config();
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { appConfig } from './config/config';
+import { appConfig, corsConfig } from './config/config';
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors({
+    origin: corsConfig.origin,
+    methods: corsConfig.methods,
+    credentials: corsConfig.credentials,
+    allowedHeaders: corsConfig.allowedHeaders,
+    exposedHeaders: corsConfig.exposedHeaders,
+    maxAge: corsConfig.maxAge,
+  });
 
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
