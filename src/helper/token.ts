@@ -1,11 +1,12 @@
 import * as jwt from 'jsonwebtoken';
 import { UnauthorizedException } from "@nestjs/common";
 import { RefreshTokenRepository } from "src/repositories/refreshToken.repository";
+import { jwtConfig } from '../config/config';
 
 export class TokenHandler {
-  static JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-  static JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '15m';
-  static REFRESH_TOKEN_EXPIRES_IN = process.env.REFRESH_TOKEN_EXPIRES_IN || '7d';
+  static JWT_SECRET = jwtConfig.secret;
+  static JWT_EXPIRES_IN = jwtConfig.accessTokenExpiresIn;
+  static REFRESH_TOKEN_EXPIRES_IN = jwtConfig.refreshTokenExpiresIn;
 
   static generateAccessToken(user: { id: string; username: string }): string {
     return jwt.sign(

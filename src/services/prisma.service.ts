@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { Pool } from 'pg';
 import { LogMethod } from '../decorators/log.decorator';
+import { databaseConfig } from 'src/config/config';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
@@ -10,7 +11,7 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
 
   constructor() {
     const pool = new Pool({
-      connectionString: process.env.DATABASE_URL,
+      connectionString: databaseConfig.url,
     });
     const adapter = new PrismaPg(pool);
 

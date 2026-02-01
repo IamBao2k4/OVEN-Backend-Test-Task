@@ -10,8 +10,6 @@ import { LogMethod } from '../decorators/log.decorator';
 
 @Injectable()
 export class AuthService {
-  private readonly JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
-
   constructor(
     private readonly userRepository: UserRepository,
     private readonly refreshTokenRepository: RefreshTokenRepository,
@@ -58,7 +56,7 @@ export class AuthService {
   @LogMethod()
   async refreshToken(data: dto.RefreshTokenDto): Promise<dto.RefreshTokenResponseDto> {
     try {
-      const payload: any = jwt.verify(data.refreshToken, this.JWT_SECRET);
+      const payload: any = TokenHandler.validateToken(data.refreshToken);
 
       if (payload.type !== 'refresh') {
         throw new UnauthorizedException('Invalid token type');
